@@ -46,7 +46,7 @@ class BodyValidatorTest extends TestCase
 
         $bodyValidator = new BodyValidator($body);
 
-        $this->assertTrue($bodyValidator->validate());
+        $this->assertFalse($bodyValidator->validate());
     }
 
     public function testBadBodySize()
