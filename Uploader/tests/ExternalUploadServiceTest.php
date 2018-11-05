@@ -78,6 +78,6 @@ class ExternalUploadServiceTest extends TestCase
 
         $this->assertEquals($jsonBody['message'], $body['message']);
 
-        $this->assertEquals($response->getStatusCode(), 400);
+        $this->assertEquals($response->getStatusCode(), 418);
     }
 }
