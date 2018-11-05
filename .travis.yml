@@ -1,0 +1,32 @@
+language: php
+php:
+  - 7.2.10
+
+sudo: required
+
+services:
+  - docker
+
+jobs:
+  include:
+  - stage: build docker base image
+    script:
+      - . scripts/changed.sh "base"
+      - if [ "$base" = "do-build" ]; then scripts/build_base.sh; fi
+  - stage: build docker service images
+    script:
+      - . scripts/changed.sh "Validator"
+      - if [ "$Validator" = "do-build" ]; then scripts/build_image.sh "Validator"; fi
+  - script:
+      - . scripts/changed.sh "Uploader"
+      - if [ "$Uploader" = "do-build" ]; then scripts/build_image.sh "Uploader"; fi
+  - stage: test
+    script: scripts/run_tests.sh "Validator"
+  - script: scripts/run_tests.sh "Uploader"
+  - stage: deploy
+    script:
+      - . scripts/changed.sh "Validator"
+      - if [ "$Validator" = "do-build" ]; then scripts/deploy.sh "Validator"; fi
+  - script:
+      - . scripts/changed.sh "Uploader"
+      - if [ "$Uploader" = "do-build" ]; then scripts/deploy.sh "Uploader"; fi

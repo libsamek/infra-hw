@@ -1,0 +1,28 @@
+version: '3'
+services:
+  validator:
+    environment:
+      - SERVER_NAME=docker-validator
+      - XDEBUG_CONFIG=remote_host=10.19.101.51
+      - API_URL=https://infrastructure-eng.herokuapp.com
+      - TIMEOUT=5
+    build: Validator/
+    volumes:
+      - ./Validator/src:/www/src
+      - ./Validator/tests:/www/tests
+      - ./Validator/vendor:/www/vendor
+    ports:
+      - "8001:8080"
+  uploader:
+    environment:
+      - SERVER_NAME=docker-uploader
+      - XDEBUG_CONFIG=remote_host=10.19.101.51
+      - API_URL=https://infrastructure-eng.herokuapp.com
+      - TIMEOUT=5
+    build: Uploader/
+    volumes:
+      - ./Uploader/src:/www/src
+      - ./Uploader/tests:/www/tests
+      - ./Uploader/vendor:/www/vendor
+    ports:
+      - "8002:8080"
